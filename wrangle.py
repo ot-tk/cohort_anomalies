@@ -26,6 +26,11 @@ def get_db_url(db,user=username,password=password,host=host):
     return f'mysql+pymysql://{user}:{password}@{host}/{db}'
 
 def wrangle_logs():
+    """
+    Returns a pandas DataFrame that has been cleaned and sorted. Specifically, it is returning a
+    DataFrame of logs data that has been read from a CSV file or a SQL database, cleaned by dropping
+    null values and filling missing values, and sorted by datetime index.
+    """
     # fire file
     filename = 'logs.csv'
     # check for file
@@ -45,14 +50,13 @@ def wrangle_logs():
         df.insert(2, 'datetime', df.apply(lambda row: f'{row.date} {row.time}', axis=1))
         # drop old date and time columns
         df = df.drop(columns=['date','time'])
-        # Change column type to datetime64[ns] for columns: 'datetime', 'start_date', 'end_date'
-        df = df.astype({'datetime': 'datetime64[ns]', 'start_date': 'datetime64[ns]', 'end_date': 'datetime64[ns]'})
         # cache it
         df.to_csv(filename,index=False)
-        return df.set_index('datetime').sort_index()
-    # get prebuilt wildfire date
+    # get prebuilt csv
     else:
         # read prebuilt csv
         df = pd.read_csv(filename)
-        # make datetime index and sort
-        return df.set_index('datetime').sort_index()
+    # Change column type to datetime64[ns] for columns: 'datetime', 'start_date', 'end_date'
+    df = df.astype({'datetime': 'datetime64[ns]', 'start_date': 'datetime64[ns]', 'end_date': 'datetime64[ns]'})
+    # make datetime index and sort
+    return df.set_index('datetime').sort_index()
