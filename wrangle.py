@@ -47,12 +47,12 @@ def wrangle_logs():
         df = df.drop(columns=['date','time'])
         # Change column type to datetime64[ns] for columns: 'datetime', 'start_date', 'end_date'
         df = df.astype({'datetime': 'datetime64[ns]', 'start_date': 'datetime64[ns]', 'end_date': 'datetime64[ns]'})
-        # make datetime index and sort
-        df = df.set_index('datetime').sort_index()
         # cache it
         df.to_csv(filename,index=False)
-        return df
+        return df.set_index('datetime').sort_index()
     # get prebuilt wildfire date
     else:
         # read prebuilt csv
-        return pd.read_csv(filename)
+        df = pd.read_csv(filename)
+        # make datetime index and sort
+        return df.set_index('datetime').sort_index()
