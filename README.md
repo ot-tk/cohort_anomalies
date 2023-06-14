@@ -1,93 +1,73 @@
-# Cohort Anomalies 
+# Cohort Anomalies
 
-# Project Description
+## Project Description
+
 Identify anomalies and metrics in student access to the Codeup Curriculum
 
- 
-# Project Goal
- 
-* Identify: 
-    * which lesson appears to attract the most traffic consistently across cohorts (per program).
-    * which lessons are covered significantly more than other cohorts and which are glossed over.
-    * if there are students who, when active, hardly access the curriculum and gather the relevant data on them. 
-    * any suspicious activity such as web-scraping and suspicious IP access and users and/or machines accessing the curriculum who shouldn’t be. 
-    * topics that Codeup grads continue to reference after graduation and into their jobs (for each program).
-    * any other anomalies. 
+## Project Goal
 
- 
-# Initial Thoughts
- 
-The largest cohort will have the most diverse log activity. 
- 
-# The Plan
- 
-* Acquire data:
-    * Download the anonymized-curriclum-access.txt file from the company email
-    * Get the curriculum_logs data from the Codeup SQL server 
-    * Convert to a single dataframe
- 
+* Identify:
+  * which lesson appears to attract the most traffic consistently across cohorts (per program).
+  * which lessons are covered significantly more than other cohorts and which are glossed over.
+  * if there are students who, when active, hardly access the curriculum and gather the relevant data on them.
+  * any suspicious activity such as web-scraping and suspicious IP access and users and/or machines accessing the curriculum who shouldn’t be.
+  * topics that Codeup grads continue to reference after graduation and into their jobs (for each program).
+  * any other anomalies.
+
+## Initial Thoughts
+
+The program with the most cohorts will have the most diverse log activity.
+
+## The Plan
+
+* Acquire data from Codeup MySQL DB
 * Prepare data:
-   * Look at the data:
-		* nulls
-		* value counts
-        * distribution of values
-		* data types
-		* numerical/categorical columns
-		* names of columns
- 
+  * Look at the data:
+    * nulls
+    * value counts
+    * distribution of values
+    * data types
+    * numerical/categorical columns
+    * names of columns
 * Explore/Analyze data:
-   * Answer the following questions:
-        1. Which lesson appears to attract the most traffic consistently across cohorts (per program)?
-        2. Which lessons are covered significantly more than other cohorts and which are glossed over?
-        3. If there are students who, when active, hardly access the curriculum and gather the relevant data on them? 
-        4. If there is any suspicious activity such as web-scraping and suspicious IP access and users and/or machines accessing the curriculum who shouldn’t be? 
-        5. What topics that Codeup grads continue to reference after graduation and into their jobs (for each program)?
-        6. If there are any other anomalies. 
-       
+  * Answer the following questions:
+    1. Which lesson appears to attract the most traffic consistently across cohorts (per program)?
+    2. Is there a cohort that referred to a lesson significantly more than other cohorts seemed to gloss over?
+    3. Are there students who, when active, hardly access the curriculum? If so, what information do you have about these students?
+    4. Is there any suspicious activity, such as users/machines/etc accessing the curriculum who shouldn’t be? Does it appear that any web-scraping is happening? Are there any suspicious IP addresses?
+    5. At some point in 2019, the ability for students and alumni to access both curriculums (web dev to ds, ds to web dev) should have been shut off. Do you see any evidence of that happening? Did it happen before?
+    6. What topics are grads continuing to reference after graduation and into their jobs (for each program)?
+    7. Which lessons are least accessed?
+    8. Are there any other anomalies?
 * Conclusions:
-	* Identify anomalies and analyze Codeup metrics
-     
+  * Identify anomalies and analyze Codeup metrics
 
-# Data Dictionary
+## Data Dictionary
 
-| Feature | Definition (measurement)|
-|:--------|:-----------|
-|App Name| Name of the app|
-|App Id| app id|
-|Category| Category the app is in (selected by creator)| 
-|Rating| Quality rating given by users out of max score of 5| 
-|Rating Count| Total count of the user rating| 
-|Installs| Total number of installs the app has| 
-|Minimum Installs| the minimum installs the app has|
-|Maximum Installs| the maximum installs the app has| 
-|Free| If the app is free or not|
-|Price| The price of the app|
-|Currency| The currency of the cost of the app|
-|Size| Size of the app in kb|
-|Minimum Android| The minimum Android OS needed to run the app|
-|Developer Website| The website address for the developer|
-|Developer Email| The Email address of the developer|
-|Released| The date the app was released| 
-|Privacy Policy| The link to the Privacy Policy|
-|Last Updated| The date of the app’s last update|
-|Content Rating| The content rating of the app|
-|Ad Supported| If the app has built in ads|
-|In app purchases| If the app has in app purchases| 
-|Editor Choice| If the app has an editor choice award|
-|Viral| If the app has 1 million or more downloads (Target Variable)|
+| Feature          | Definition (measurement)                                   |
+| :--------------- | :--------------------------------------------------------- |
+| datetime (index) | date and time of user access to the Codeup Curriculum      |
+| path             | The path to the curriculum                                 |
+| user_id          | ID for the user accessing the curriculum                   |
+| cohort_id        | Quality rating given by users out of max score of 5        |
+| ip               | IP address at the time of access                           |
+| name             | Name of the Cohort                                         |
+| start_date       | Start date of the Cohort                                   |
+| end_date         | End date of the Cohort                                     |
+| program_id       | ID of the Codeup program (i.e. WebDev, Data Science, etc.) |
 
+## Steps to Reproduce
 
-# Steps to Reproduce
-1) 
-2)  
-3) 
-4) Run notebook
- 
-# Takeaways and Conclusions<br>
+1) Clone this repo
+2) If you have access to the Codeup MySQL DB:
+   * Save **env.py** in the repo w/ `user`, `password`, and `host` variables
+   * Run notebook
+3) If you don't have access:
+   * Request access from Codeup
+   * Do step 2
 
+## Conclusions
 
+### Takeaways and Conclusions
 
-# Recommendation
- 
-
-
+### Recommendation
