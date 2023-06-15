@@ -6,13 +6,12 @@ Identify anomalies and metrics in student access to the Codeup Curriculum
 
 ## Project Goal
 
-* Identify:
-  * which lesson appears to attract the most traffic consistently across cohorts (per program).
-  * which lessons are covered significantly more than other cohorts and which are glossed over.
-  * if there are students who, when active, hardly access the curriculum and gather the relevant data on them.
-  * any suspicious activity such as web-scraping and suspicious IP access and users and/or machines accessing the curriculum who shouldn’t be.
-  * topics that Codeup grads continue to reference after graduation and into their jobs (for each program).
-  * any other anomalies.
+Identify:
+
+* most and least popular lessons
+* less active students
+* suspicious activity
+* frequently referenced topics
 
 ## Initial Thoughts
 
@@ -68,6 +67,6 @@ The program with the most cohorts will have the most diverse log activity.
 
 ## Conclusions
 
-### Takeaways and Conclusions
+### Takeaways and Key Findings
 
-### Recommendation
+### Recommendations and Next Steps
