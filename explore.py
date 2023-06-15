@@ -47,23 +47,28 @@ def prep_1235(df):
     df = df[df['name'] != "unknown"]
     return df.reset_index()
 
-def question1(df,program):
+def question1(df):
+    """
+    The function performs aggregation and sorting on a dataframe, and prints the top lesson and count
+    for web development and data science programs.
+    """
     # prep it
     df2 = prep_1235(df)
     # Performed 1 aggregation grouped on columns: 'program_id', 'path'
     pg_path = df2.groupby(['program_id', 'path']).agg(path_count=('path', 'count')).reset_index()
     # Sort by column: 'path_count' (descending)
     pg_path = pg_path.sort_values(['path_count'], ascending=[False])
-    if program == 'ds':
-        # make data science df
-        ds = pg_path[pg_path.program_id==3]
-        print(f'lesson: {ds.head(1).path.values[0]}')
-        print(f'count: {ds.head(1).path_count.values[0]}')
-    elif program == 'wd':
-        # make web dev df
-        wd = pg_path[pg_path.program_id!=3]
-        print(f'lesson: {wd.head(10).tail(1).path.values[0]}')
-        print(f'count: {wd.head(10).tail(1).path_count.values[0]}')
+    # make web dev df
+    wd = pg_path[pg_path.program_id!=3]
+    print('Web Dev')
+    print(f'lesson: {wd.head(10).tail(1).path.values[0]}')
+    print(f'count: {wd.head(10).tail(1).path_count.values[0]}')
+    print()
+    # make data science df
+    ds = pg_path[pg_path.program_id==3]
+    print('Data Science')
+    print(f'lesson: {ds.head(1).path.values[0]}')
+    print(f'count: {ds.head(1).path_count.values[0]}')
 
 def question2(df):
     """
