@@ -65,8 +65,18 @@ The program with the most cohorts will have the most diverse log activity.
    * Request access from Codeup
    * Do step 2
 
-## Conclusions
+## Key Findings and Conclusions
 
-### Takeaways and Key Findings
+- All time most referenced lesson per Program:
+    - **Web Dev**: Javascript-I – Intro – Working with Data Types, Operators, and Variables
+    - **Data Science**: Classification – Overview (referenced mostly by Darden Cohort)
+- Top 3 referenced topics per Program after graduation:
+    - **Web Dev**: Spring, Javascript-I, and HTML-CSS
+    - **Data Science**: SQL, Fundamentals, and Classification
+- There were some students who accessed the curriculum less often than there were days in the program they were in. Most were from web dev, in cohorts Oberon, Neptune, and Sequoia. It is possible that some of these students were not able to finish the course and dropped out.
+- Before the cross-curriculum access was shut off, there were some students accessing the curriculum of both programs. After the shut off, it seemed that of the few students that were trying to access another program's curriculum, most were web dev students.
+
 
 ### Recommendations and Next Steps
+
+* We should send out an alumni survey to ascertain if the frequently searched for topics on the Codeup site were thoroughly covered during their course and take appropriate action. Additionally, any overlap in currently covered topics and searched for topics should be specifically emphasized as soon as possible. 
