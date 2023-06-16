@@ -75,6 +75,9 @@ The program with the most cohorts will have the most diverse log activity.
     - **Data Science**: SQL, Fundamentals, and Classification
 - There were some students who accessed the curriculum less often than there were days in the program they were in. Most were from web dev, in cohorts Oberon, Neptune, and Sequoia. It is possible that some of these students were not able to finish the course and dropped out.
 - Before the cross-curriculum access was shut off, there were some students accessing the curriculum of both programs. After the shut off, it seemed that of the few students that were trying to access another program's curriculum, most were web dev students.
+- Before the cross-curriculum access was shut off, there were some students accessing the curriculum of both programs. After the shut off, it seemed that of the few students that were trying to access another program's curriculum, most were web dev students.
+- After graduation the web dev alumni’s least accessed lessons were those belonging to the data science curriculum, such as, Descriptive Stats, Intro to Seaborn, and Module: Classification. The data science alumni, on the other hand,  primarily accessed lessons from their curriculum, such as, Classical Programming vs Machine Learning, Selecting a Hypothesis Test, and Advanced Topics.
+- No actual security anomalies were detected. The outliers found in our analysis turned out to be diligent students or hard working 
 
 
 ### Recommendations and Next Steps
