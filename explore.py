@@ -47,6 +47,8 @@ def prep_1235(df):
     df = df[df['name'] != "unknown"]
     return df.reset_index()
 
+"""------------------------------------------------------------------------------------------------------------------"""
+
 def question1(df):
     """
     The function performs aggregation and sorting on a dataframe, and prints the top lesson and count
@@ -70,6 +72,8 @@ def question1(df):
     print(f'lesson: {ds.head(1).path.values[0]}')
     print(f'count: {ds.head(1).path_count.values[0]}')
 
+'''------------------------------------------------------------------------------------------------------------------'''   
+
 def question2(df):
     """
     This function performs an aggregation on a dataframe grouped by program ID, name, and path, sorts
@@ -90,6 +94,8 @@ def question2(df):
     # Sort by column: 'path_count' (descending)
     glossy = glossy.sort_values(['path_count'], ascending=[False])
     return glossy[glossy['path'] == "classification/overview"].iloc[:,1:]
+
+"""------------------------------------------------------------------------------------------------------------------"""
 
 def question3(df,plot=False):
     """
@@ -136,10 +142,82 @@ def question3(df,plot=False):
         # plot it
         plt.show()
 
-# placeholder for question 4
-#
-#
-# placeholder for question 4
+"""------------------------------------------------------------------------------------------------------------------"""        
+
+# Question 4
+# functions for anomaly detection
+def one_user_df_prep(df, user):
+    df = df[df.user_id == user].copy()
+    df = df.sort_index()
+    pages_one_user = df['path'].resample('d').count()
+    return pages_one_user
+
+def compute_pct_b(pages_one_user, span, k, user):
+    midband = pages_one_user.ewm(span=span).mean()
+    stdev = pages_one_user.ewm(span=span).std()
+    ub = midband + stdev*k
+    lb = midband - stdev*k
+    
+    my_df = pd.concat([pages_one_user, midband, ub, lb], axis=1)
+    my_df.columns = ['pages_one_user', 'midband', 'ub', 'lb']
+    
+    my_df['pct_b'] = (my_df['pages_one_user'] - my_df['lb'])/(my_df['ub'] - my_df['lb'])
+    my_df['user_id'] = user
+    return my_df
+
+def plot_bands(my_df, user):
+    fig, ax = plt.subplots(figsize=(12,8))
+    ax.plot(my_df.index, my_df.pages_one_user, label='Number of Pages, User: '+str(user))
+    ax.plot(my_df.index, my_df.midband, label = 'EMA/midband')
+    ax.plot(my_df.index, my_df.ub, label = 'Upper Band')
+    ax.plot(my_df.index, my_df.lb, label = 'Lower Band')
+    ax.legend(loc='best')
+    ax.set_ylabel('Number of Pages')
+    plt.show()
+
+def find_anomalies(df, user, span, weight, plot=False):
+    pages_one_user = one_user_df_prep(df, user)
+    
+    my_df = compute_pct_b(pages_one_user, span, weight, user)
+    
+    if plot:
+        plot_bands(my_df, user)
+    
+    return my_df[my_df.pct_b>1]
+
+def anomaly_loop(df,span=30 ,k=3.5):
+   
+    anomalies = pd.DataFrame()
+    for u in df.user_id.unique():
+        df_user = find_anomalies(df,u, span, k)
+        anomalies = pd.concat([anomalies, df_user]) 
+    return anomalies
+
+def get_lower_and_upper_bounds(col, k=1.5):
+
+    #calculate our q1 and q3
+    q1 = col.quantile(0.25)
+    q3 = col.quantile(0.75)
+    
+    iqr = q3-q1    
+    
+    #create fence
+    lower_fence = q1 - (iqr*k) 
+    upper_fence = q3 + (iqr*k) 
+    
+    return lower_fence, upper_fence
+
+
+
+def print_lower_and_upper_bounds(anomalies, lower_fence, upper_fence):
+    '''print("Lower Fence for pages_one_user")    
+    print(anomalies["pages_one_user"] [(anomalies["pages_one_user"] < lower_fence)].to_markdown())
+    print("-------------------------------------------")
+    print("Upper Fence for pages_one_user")
+    print(anomalies[["pages_one_user","user_id"]] [(anomalies["pages_one_user"] > upper_fence)].to_markdown())'''
+    df_upper_fence = anomalies[["pages_one_user","user_id"]] [(anomalies["pages_one_user"] > upper_fence)]
+    return df_upper_fence
+    """------------------------------------------------------------------------------------------------------------------"""
 
 def question5(df,program):
     """
@@ -166,13 +244,30 @@ def question5(df,program):
         # show most recent java/javascript paths accessed by data science
         return ds[ds['path'].str.contains("java", na=False, case=False)][['datetime','path','program_id']].tail(5)
 
-# placeholder for question 6
-#
-#
-# placeholder for question 6
+"""------------------------------------------------------------------------------------------------------------------"""
 
-# placeholder for question 7
-#
-#
-# placeholder for question 7
+# question 6
+#function to make a df for events after graduation
+def after_grad(df):
+    df_after_grad = df.sort_values(by=['user_id','end_date'])
+    df_after_grad = df_after_grad[df_after_grad.index > df_after_grad.end_date] 
+    return df_after_grad
+#function to clean up the df_after_grad
+def clean_after_grad(df_after_grad):
+    df_after_grad = df_after_grad[df_after_grad.name != 'Staff']
+    df_after_grad=df_after_grad.drop(columns=['cohort_id','user_id','cohort_id','ip','name','start_date','end_date'])
+    df_after_grad['path'] = df_after_grad['path'].str.replace('content/', '')
+    df_after_grad['path'] = df_after_grad['path'].str.split('/').str[0]
+    df_after_grad['path'] = df_after_grad['path'].str.replace('\d+', '')
+    df_after_grad['path'] = df_after_grad['path'].str.replace('.jpg', '')
+    df_after_grad['path'] = df_after_grad['path'].str.replace('appendix', '')
+    df_after_grad['path'] = df_after_grad['path'].str.replace('search', '')
+    df_after_grad['path'] = df_after_grad['path'].str.replace('^-', '')
+    df_after_grad = df_after_grad[df_after_grad['path'] != '']
+    df_after_grad = df_after_grad[df_after_grad['path'] != '.jpeg']
+    df_after_grad = df_after_grad[df_after_grad['path'] != 'index.html']
+    df_after_grad = df_after_grad[df_after_grad['path'] != 'toc']
+    return df_after_grad
+
+
 
